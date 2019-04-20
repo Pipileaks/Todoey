@@ -11,11 +11,15 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     var itemArray = ["Xcode Çalış", "Alp'i döv", "Rejim Yap"]
+    
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
      
-        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+                itemArray = items //Bu kısım, string local dataya bağlama, ve if let burada eğer burada bir data var ise çalıştırılacak yok ise çalıştırmayacak.
+        }
         
     }
 
@@ -61,6 +65,8 @@ class TodoListViewController: UITableViewController {
             //add item kısmına tıklaınca UIAlert ne olacağı
             
             self.itemArray.append(inputValue.text!) // array yazılanı ekleme
+            
+            self.defaults.set(self.itemArray, forKey: "TodoListArray") // Item local storage için tanımlama
             
             self.tableView.reloadData() // tableview datayı güncelleme
             
