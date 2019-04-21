@@ -12,11 +12,13 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = [Item]()
     
-    let defaults = UserDefaults.standard
-
+       let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-     
+        
+        
         
         let newItem = Item()
         newItem.title = "Xcode Çalış"
@@ -31,16 +33,16 @@ class TodoListViewController: UITableViewController {
         itemArray.append(newItem3)
         
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
-                itemArray = items //Bu kısım, string local dataya bağlama, ve if let burada eğer burada bir data var ise çalıştırılacak yok ise çalıştırmayacak.
-        }
+//        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
+//            itemArray = items //Bu kısım, string local dataya bağlama, ve if let burada eğer burada bir data var ise çalıştırılacak yok ise çalıştırmayacak.
+//        }
         
     }
-
+    
     
     //MARK - Tableview Datasource Methods
     
- 
+    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
@@ -60,14 +62,14 @@ class TodoListViewController: UITableViewController {
         
         cell.accessoryType = item.done ? .checkmark : .none
         
-//Ternary'den önce
-//
-//        if item.done == true {
-//            cell.accessoryType = .checkmark
-//        } else {
-//            cell.accessoryType = .none
-//        }
-//
+        //Ternary'den önce
+        //
+        //        if item.done == true {
+        //            cell.accessoryType = .checkmark
+        //        } else {
+        //            cell.accessoryType = .none
+        //        }
+        //
         
         return cell
     }
@@ -79,9 +81,10 @@ class TodoListViewController: UITableViewController {
         
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
-        tableView.reloadData()
+        saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
+        
         
     }
     
@@ -99,13 +102,10 @@ class TodoListViewController: UITableViewController {
             
             self.itemArray.append(newItem) // array yazılanı ekleme
             
-            self.defaults.set(self.itemArray, forKey: "TodoListArray") // Item local storage için tanımlama
-            
-            self.tableView.reloadData() // tableview datayı güncelleme
-            
+            self.saveItems()
             
         }
-            // adding text filed to UIAlert
+        // adding text filed to UIAlert
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create new item"
             
@@ -120,7 +120,23 @@ class TodoListViewController: UITableViewController {
         
     }
     
-  
-
+    // Mark - Model Manupulation Methods
+    
+    func saveItems() {
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array, \(error)")
+        }
+            self.tableView.reloadData() // tableview datayı güncelleme
+        
+        
+    }
+    
+    
+    
 }
 
