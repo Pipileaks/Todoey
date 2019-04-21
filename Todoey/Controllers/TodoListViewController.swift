@@ -55,16 +55,19 @@ class TodoListViewController: UITableViewController {
         cell.textLabel?.text = item.title
         
         
+        //Ternary Operator ***
+        // value = condition ? valuIfTrue : valueIfFalse
         
+        cell.accessoryType = item.done ? .checkmark : .none
         
-        
-        
-        if item.done == true {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
-        
+//Ternary'den önce
+//
+//        if item.done == true {
+//            cell.accessoryType = .checkmark
+//        } else {
+//            cell.accessoryType = .none
+//        }
+//
         
         return cell
     }
