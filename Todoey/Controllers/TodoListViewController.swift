@@ -31,9 +31,9 @@ class TodoListViewController: UITableViewController {
         itemArray.append(newItem3)
         
         
-//        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-//                itemArray = items //Bu kısım, string local dataya bağlama, ve if let burada eğer burada bir data var ise çalıştırılacak yok ise çalıştırmayacak.
-//        }
+        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
+                itemArray = items //Bu kısım, string local dataya bağlama, ve if let burada eğer burada bir data var ise çalıştırılacak yok ise çalıştırmayacak.
+        }
         
     }
 
@@ -103,7 +103,7 @@ class TodoListViewController: UITableViewController {
             
             self.tableView.reloadData() // tableview datayı güncelleme
             
-            print("Succes")
+            
         }
             // adding text filed to UIAlert
         alert.addTextField { (alertTextField) in
