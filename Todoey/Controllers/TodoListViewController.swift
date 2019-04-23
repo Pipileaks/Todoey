@@ -20,22 +20,10 @@ class TodoListViewController: UITableViewController {
         
         
         
-        let newItem = Item()
-        newItem.title = "Xcode Çalış"
-        itemArray.append(newItem)
+   
         
-        let newItem2 = Item()
-        newItem2.title = "Oturma"
-        itemArray.append(newItem2)
+        loadItems()
         
-        let newItem3 = Item()
-        newItem3.title = "Yeme"
-        itemArray.append(newItem3)
-        
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
-//            itemArray = items //Bu kısım, string local dataya bağlama, ve if let burada eğer burada bir data var ise çalıştırılacak yok ise çalıştırmayacak.
-//        }
         
     }
     
@@ -136,6 +124,19 @@ class TodoListViewController: UITableViewController {
         
     }
     
+    func loadItems() {
+       
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding item arrayi, \(error)")
+            }
+        }
+       
+        
+    }
     
     
 }
